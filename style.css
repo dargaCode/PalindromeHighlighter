@@ -1,0 +1,20 @@
+body  {
+  background: #ccc;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.editable-div {
+  font-family: monospace;
+  font-size: 16px;
+  background: #eee;
+  padding: 1em;
+}
