@@ -15,6 +15,14 @@ h1 {
 .editable-div {
   font-family: monospace;
   font-size: 16px;
-  background: #eee;
+  background: #fafafa;
   padding: 1em;
+}
+
+.editable-div:focus {
+  outline: 2px solid #aaf;
+}
+
+.highlight {
+  background: pink;
 }
