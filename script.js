@@ -30,7 +30,7 @@ editableDiv.addEventListener('paste', function(event) {
 function populateChildDivs(parentDiv, inputText) {
   const lines = inputText.split('\n');
 
-  parentDiv.innerText = '';
+  parentDiv.textContent = '';
 
   for (line of lines) {
     const div = document.createElement('div');
@@ -39,7 +39,7 @@ function populateChildDivs(parentDiv, inputText) {
     if (line === '') {
       div.innerHTML = '</br>';
     } else {
-      div.innerText = line;
+      div.textContent = line;
     }
 
     parentDiv.appendChild(div);
@@ -71,7 +71,7 @@ function highlightPalindromesInDiv(div) {
     return;
   }
 
-  const divText = div.innerText;
+  const divText = div.textContent;
   const divWords = divText.split(" ");
 
   for (let i = 0; i < divWords.length; i++) {
