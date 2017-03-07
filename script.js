@@ -131,7 +131,29 @@ function processInput() {
 }
 
 function mirrorDivContent() {
-  mirrorDiv.innerHTML = editableDiv.innerHTML;
+  const editableDivChildren = editableDiv.children;
+  const noChildDiv = editableDivChildren.length === 0;
+
+  // single line of text
+  if (noChildDiv) {
+    // when text is longer than one line, content-editable divs represent each line as its own div. Wrap a single line in a div as well, so that expectations can be consistent for later functions.
+    const inputText = editableDiv.textContent;
+    const inputDiv = wrapTextInDiv(inputText);
+
+    mirrorDiv.innerHTML = '';
+    mirrorDiv.appendChild(inputDiv);
+  // multiple lines of text
+  } else {
+    mirrorDiv.innerHTML = editableDiv.innerHTML;
+  }
+}
+
+function wrapTextInDiv(text) {
+  const div = document.createElement('div');
+
+  div.textContent = text;
+
+  return div;
 }
 
 function highlightAllPalindromes() {
