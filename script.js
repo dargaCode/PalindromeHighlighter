@@ -133,17 +133,19 @@ function highlightAllPalindromes() {
   const childDivs = mirrorDiv.children;
 
   for (div of childDivs) {
-    highlightPalindromesInDiv(div);
+    const divHTML = div.innerHTML;
+
+    // preserve the html of <br> divs, which are used by content-editable divs as spacers
+    if (divHTML === '<br>') {
+      // do nothing
+    } else {
+      highlightPalindromesInDiv(div);
+    }
   }
 }
 
 function highlightPalindromesInDiv(div) {
-  const divHTML = div.innerHTML;
 
-  // do nothing to blank <br> divs. This prevents the empty space from being stripped out.
-  if (divHTML === '<br>') {
-    return;
-  }
 
   const divText = div.textContent;
   const divWords = divText.split(" ");
