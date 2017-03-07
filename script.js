@@ -19,8 +19,6 @@ var mirrorDiv = document.querySelector('#editable-div-mirror');
 
 // EVENT BINDINGS
 
-editableDiv.addEventListener('input', processInput);
-
 editableDiv.addEventListener('paste', function(event) {
   const pastedText = event.clipboardData.getData('text/plain');
   const sanitizedLines = getSanitizedLines(pastedText);
@@ -31,6 +29,8 @@ editableDiv.addEventListener('paste', function(event) {
   // prevent normal input on paste
   event.preventDefault();
 });
+
+editableDiv.addEventListener('input', processInput);
 
 // FUNCTIONS
 
@@ -107,6 +107,7 @@ function sanitizeChar(char) {
   return sanitized;
 }
 
+// while typing content, content-editable divs represent each new line as a div. This converts pasted text into a consistent format
 function populateChildDivs(parentDiv, lines) {
   parentDiv.textContent = '';
 
@@ -140,32 +141,52 @@ function highlightAllPalindromes() {
     const divHTML = div.innerHTML;
 
     // preserve the html of <br> divs, which are used by content-editable divs as spacers
-    if (divHTML === '<br>') {
-      // do nothing
-    } else {
+    if (divHTML != '<br>') {
       highlightPalindromesInDiv(div);
     }
   }
 }
 
 function highlightPalindromesInDiv(div) {
-
-
   const divText = div.textContent;
-  const divWords = divText.split(" ");
+  let currentWord = '';
+  let highlightedContent = '';
 
-  for (let i = 0; i < divWords.length; i++) {
-    const word = divWords[i];
-    const palindromic = isPalindromicWord(word);
+  for (let i = 0; i < divText.length; i++) {
+    let char = divText.charAt(i);
 
-    if (palindromic) {
-      divWords[i] = `<span class="highlight">${word}</span>`;
+    char = sanitizeChar(char);
+
+    // check for end of text, to make sure final word (or only word) is added.
+    const endReached = i === divText.length - 1;
+
+    // end of a word
+    if (char === ' ') {
+      // replace currentWord with highlight span
+      currentWord = highlightPalindromicWord(currentWord);
+      highlightedContent += currentWord;
+      highlightedContent += ' ';
+      currentWord = '';
+    // last (or only) word in the string
+    } else if (endReached) {
+      currentWord += char;
+      currentWord = highlightPalindromicWord(currentWord);
+      highlightedContent += currentWord;
+    // normal character
+    } else {
+      currentWord += char;
     }
   }
 
-  const newContent = divWords.join(' ');
+  div.innerHTML = highlightedContent;
+}
 
-  div.innerHTML = newContent;
+function highlightPalindromicWord(word) {
+  if (isPalindromicWord(word)) {
+    word = `<span class="highlight">${word}</span>`;
+  }
+
+  return word;
 }
 
 function isPalindromicWord(word) {
@@ -188,6 +209,7 @@ function isPalindromicWord(word) {
     }
   }
 
+  // no valid characters
   if (frontWord.length === 0) {
     return false;
   }
