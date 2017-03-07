@@ -1,4 +1,11 @@
 
+// CONSTANTS
+
+const CHAR_CODE_A = 'a'.charCodeAt(0);
+const CHAR_CODE_Z = 'z'.charCodeAt(0);
+const CHAR_CODE_0 = '0'.charCodeAt(0);
+const CHAR_CODE_9 = '9'.charCodeAt(0);
+
 // DOM SELECTORS
 
 var editableDiv = document.querySelector('#editable-div');
@@ -122,19 +129,13 @@ function isCharValid(char) {
 }
 
 function isCharCodeLowerCaseLetter(charCode) {
-  const charCodeA = 'a'.charCodeAt(0);
-  const charCodeZ = 'z'.charCodeAt(0);
-
-  const isLowerCaseLetter = charCode >= charCodeA && charCode <= charCodeZ;
+  const isLowerCaseLetter = charCode >= CHAR_CODE_A && charCode <= CHAR_CODE_Z;
 
   return isLowerCaseLetter;
 }
 
 function isCharCodeDigit(charCode) {
-  const charCodeZero = '0'.charCodeAt(0);
-  const charCodeNine = '9'.charCodeAt(0);
-
-  const isDigit = charCode >= charCodeZero && charCode <= charCodeNine;
+  const isDigit = charCode >= CHAR_CODE_0 && charCode <= CHAR_CODE_9;
 
   return isDigit;
 }
