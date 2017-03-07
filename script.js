@@ -1,12 +1,12 @@
 
 // CONSTANTS
 
-const CHAR_CODE_A = 'a'.charCodeAt(0);
-const CHAR_CODE_Z = 'z'.charCodeAt(0);
-const CHAR_CODE_0 = '0'.charCodeAt(0);
-const CHAR_CODE_9 = '9'.charCodeAt(0);
+var CHAR_CODE_A = 'a'.charCodeAt(0);
+var CHAR_CODE_Z = 'z'.charCodeAt(0);
+var CHAR_CODE_0 = '0'.charCodeAt(0);
+var CHAR_CODE_9 = '9'.charCodeAt(0);
 
-const SANITIZED_CHARS = {
+var SANITIZED_CHARS = {
   '<': '(',
   '>': ')',
   '&': '+',
@@ -20,8 +20,8 @@ var mirrorDiv = document.querySelector('#editable-div-mirror');
 // EVENT BINDINGS
 
 editableDiv.addEventListener('paste', function(event) {
-  const pastedText = event.clipboardData.getData('text/plain');
-  const sanitizedLines = getSanitizedLines(pastedText);
+  var pastedText = event.clipboardData.getData('text/plain');
+  var sanitizedLines = getSanitizedLines(pastedText);
 
   populateChildDivs(this, sanitizedLines);
   processInput();
@@ -36,15 +36,15 @@ editableDiv.addEventListener('input', processInput);
 
 // sanitize html while splitting, for improved performance
 function getSanitizedLines(text) {
-  const lines = [];
-  let currentLine = '';
+  var lines = [];
+  var currentLine = '';
 
-  for (let i = 0; i < text.length; i++) {
-    let char = text.charAt(i);
+  for (var i = 0; i < text.length; i++) {
+    var char = text.charAt(i);
 
     //replace '&nbsp;' with ' '
     if (char === '&') {
-      const charsToSkip = skipNonBreakingSpace(text, i);
+      var charsToSkip = skipNonBreakingSpace(text, i);
 
       if (charsToSkip > 0) {
         char = ' ';
@@ -56,7 +56,7 @@ function getSanitizedLines(text) {
     char = sanitizeChar(char);
 
     // make sure the final line is added, by checking for the end
-    const endReached = i === text.length - 1;
+    var endReached = i === text.length - 1;
 
     if (char === '\n') {
       lines.push(currentLine);
@@ -75,17 +75,17 @@ function getSanitizedLines(text) {
 
 // detect '&nbsp' html element, so it can be skipped and converted into an empty space.
 function skipNonBreakingSpace(string, index) {
-  let charsToSkip = 0;
+  var charsToSkip = 0;
 
   // need to detect both with and without semicolon, since both technically get rendered as a blank space between words.
-  const checkStringShort = string.substring(index, index + 5);
-  const checkStringLong = string.substring(index, index + 6);
+  var checkStringShort = string.substring(index, index + 5);
+  var checkStringLong = string.substring(index, index + 6);
 
-  const nonBreakingShort = '&nbsp';
-  const nonBreakingLong =  '&nbsp;';
+  var nonBreakingShort = '&nbsp';
+  var nonBreakingLong =  '&nbsp;';
 
-  const shortFound = checkStringShort === nonBreakingShort;
-  const longFound = checkStringLong === nonBreakingLong;
+  var shortFound = checkStringShort === nonBreakingShort;
+  var longFound = checkStringLong === nonBreakingLong;
 
   if (longFound) {
     charsToSkip = 5;
@@ -98,7 +98,7 @@ function skipNonBreakingSpace(string, index) {
 
 // used to strip html from the text
 function sanitizeChar(char) {
-  let sanitized = char;
+  var sanitized = char;
 
   if (SANITIZED_CHARS[char]) {
     sanitized = SANITIZED_CHARS[char];
@@ -112,7 +112,7 @@ function populateChildDivs(parentDiv, lines) {
   parentDiv.textContent = '';
 
   for (line of lines) {
-    const div = document.createElement('div');
+    var div = document.createElement('div');
 
     // preserve empty lines in html
     if (line === '') {
@@ -131,14 +131,14 @@ function processInput() {
 }
 
 function mirrorDivContent() {
-  const editableDivChildren = editableDiv.children;
-  const noChildDiv = editableDivChildren.length === 0;
+  var editableDivChildren = editableDiv.children;
+  var noChildDiv = editableDivChildren.length === 0;
 
   // single line of text
   if (noChildDiv) {
     // when text is longer than one line, content-editable divs represent each line as its own div. Wrap a single line in a div as well, so that expectations can be consistent for later functions.
-    const inputText = editableDiv.textContent;
-    const inputDiv = wrapTextInDiv(inputText);
+    var inputText = editableDiv.textContent;
+    var inputDiv = wrapTextInDiv(inputText);
 
     mirrorDiv.innerHTML = '';
     mirrorDiv.appendChild(inputDiv);
@@ -149,7 +149,7 @@ function mirrorDivContent() {
 }
 
 function wrapTextInDiv(text) {
-  const div = document.createElement('div');
+  var div = document.createElement('div');
 
   div.textContent = text;
 
@@ -157,10 +157,10 @@ function wrapTextInDiv(text) {
 }
 
 function highlightAllPalindromes() {
-  const childDivs = mirrorDiv.children;
+  var childDivs = mirrorDiv.children;
 
   for (div of childDivs) {
-    const divHTML = div.innerHTML;
+    var divHTML = div.innerHTML;
 
     // preserve the html of <br> divs, which are used by content-editable divs as spacers
     if (divHTML != '<br>') {
@@ -170,17 +170,17 @@ function highlightAllPalindromes() {
 }
 
 function highlightPalindromesInDiv(div) {
-  const divText = div.textContent;
-  let currentWord = '';
-  let highlightedContent = '';
+  var divText = div.textContent;
+  var currentWord = '';
+  var highlightedContent = '';
 
-  for (let i = 0; i < divText.length; i++) {
-    let char = divText.charAt(i);
+  for (var i = 0; i < divText.length; i++) {
+    var char = divText.charAt(i);
 
     char = sanitizeChar(char);
 
     // check for end of text, to make sure final word (or only word) is added.
-    const endReached = i === divText.length - 1;
+    var endReached = i === divText.length - 1;
 
     // end of a word
     if (char === ' ') {
@@ -212,10 +212,10 @@ function highlightPalindromicWord(word) {
 }
 
 function isPalindromicWord(word) {
-  let frontWord = '';
-  let backWord = '';
+  var frontWord = '';
+  var backWord = '';
 
-  for (let i = 0; i < word.length; i++) {
+  for (var i = 0; i < word.length; i++) {
     var frontIndex = i;
     var backIndex = word.length - 1 - i;
 
@@ -241,25 +241,25 @@ function isPalindromicWord(word) {
 
 function isCharValid(char) {
   char = char.toLowerCase();
-  const charCode = char.charCodeAt(0);
+  var charCode = char.charCodeAt(0);
 
-  const isDigit = isCharCodeDigit(charCode);
-  const isLetter = isCharCodeLowerCaseLetter(charCode);
+  var isDigit = isCharCodeDigit(charCode);
+  var isLetter = isCharCodeLowerCaseLetter(charCode);
 
   // Numeric characters count as valid palindrome ingredients.
-  const isValid = isDigit || isLetter;
+  var isValid = isDigit || isLetter;
 
   return isValid;
 }
 
 function isCharCodeLowerCaseLetter(charCode) {
-  const isLowerCaseLetter = charCode >= CHAR_CODE_A && charCode <= CHAR_CODE_Z;
+  var isLowerCaseLetter = charCode >= CHAR_CODE_A && charCode <= CHAR_CODE_Z;
 
   return isLowerCaseLetter;
 }
 
 function isCharCodeDigit(charCode) {
-  const isDigit = charCode >= CHAR_CODE_0 && charCode <= CHAR_CODE_9;
+  var isDigit = charCode >= CHAR_CODE_0 && charCode <= CHAR_CODE_9;
 
   return isDigit;
 }
