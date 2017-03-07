@@ -6,6 +6,12 @@ const CHAR_CODE_Z = 'z'.charCodeAt(0);
 const CHAR_CODE_0 = '0'.charCodeAt(0);
 const CHAR_CODE_9 = '9'.charCodeAt(0);
 
+const SANITIZED_CHARS = {
+  '<': '(',
+  '>': ')',
+  '&': '+',
+}
+
 // DOM SELECTORS
 
 var editableDiv = document.querySelector('#editable-div');
@@ -16,9 +22,10 @@ var mirrorDiv = document.querySelector('#editable-div-mirror');
 editableDiv.addEventListener('input', processInput);
 
 editableDiv.addEventListener('paste', function(event) {
-  const sanitizedText = event.clipboardData.getData('text/plain');
+  const pastedText = event.clipboardData.getData('text/plain');
+  const sanitizedLines = getSanitizedLines(pastedText);
 
-  populateChildDivs(this, sanitizedText);
+  populateChildDivs(this, sanitizedLines);
   processInput();
 
   // prevent normal input on paste
@@ -27,9 +34,43 @@ editableDiv.addEventListener('paste', function(event) {
 
 // FUNCTIONS
 
-function populateChildDivs(parentDiv, inputText) {
-  const lines = inputText.split('\n');
+// sanitize html while splitting, for improved performance
+function getSanitizedLines(text) {
+  const lines = [];
+  let currentLine = '';
 
+  for (let i = 0; i < text.length; i++) {
+    let char = text.charAt(i);
+
+    char = sanitizeChar(char);
+
+    if (char === '\n') {
+      lines.push(currentLine);
+      currentLine = '';
+    } else {
+      currentLine += char;
+    }
+  }
+
+  // add the line after final linebreak
+  lines.push(currentLine);
+
+  console.log(lines);
+  return lines;
+}
+
+// used to strip html from the text
+function sanitizeChar(char) {
+  let sanitized = char;
+
+  if (SANITIZED_CHARS[char]) {
+    sanitized = SANITIZED_CHARS[char];
+  }
+
+  return sanitized;
+}
+
+function populateChildDivs(parentDiv, lines) {
   parentDiv.textContent = '';
 
   for (line of lines) {
