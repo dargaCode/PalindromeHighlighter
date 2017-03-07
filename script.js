@@ -42,6 +42,17 @@ function getSanitizedLines(text) {
   for (let i = 0; i < text.length; i++) {
     let char = text.charAt(i);
 
+    //replace '&nbsp;' with ' '
+    if (char === '&') {
+      const charsToSkip = skipNonBreakingSpace(text, i);
+
+      if (charsToSkip > 0) {
+        char = ' ';
+        // skip ahead past the rest of the special sequence
+        i += charsToSkip;
+      }
+    }
+
     char = sanitizeChar(char);
 
     if (char === '\n') {
@@ -52,11 +63,33 @@ function getSanitizedLines(text) {
     }
   }
 
-  // add the line after final linebreak
+  // add the line after final linebreak (or if no linebreak found)
   lines.push(currentLine);
 
-  console.log(lines);
   return lines;
+}
+
+// detect '&nbsp' html element, so it can be skipped and converted into an empty space.
+function skipNonBreakingSpace(string, index) {
+  let charsToSkip = 0;
+
+  // need to detect both with and without semicolon, since both technically get rendered as a blank space between words.
+  const checkStringShort = string.substring(index, index + 5);
+  const checkStringLong = string.substring(index, index + 6);
+
+  const nonBreakingShort = '&nbsp';
+  const nonBreakingLong =  '&nbsp;';
+
+  const shortFound = checkStringShort === nonBreakingShort;
+  const longFound = checkStringLong === nonBreakingLong;
+
+  if (longFound) {
+    charsToSkip = 5;
+  } else if (shortFound) {
+    charsToSkip = 4;
+  }
+
+  return charsToSkip;
 }
 
 // used to strip html from the text
