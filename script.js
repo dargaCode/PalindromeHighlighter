@@ -6,11 +6,40 @@ var mirrorDiv = document.querySelector('#editable-div-mirror');
 
 // EVENT BINDINGS
 
-editableDiv.addEventListener('input', processText);
+editableDiv.addEventListener('input', processInput);
+
+editableDiv.addEventListener('paste', function(event) {
+  const sanitizedText = event.clipboardData.getData('text/plain');
+
+  populateChildDivs(this, sanitizedText);
+  processInput();
+
+  // prevent normal input on paste
+  event.preventDefault();
+});
 
 // FUNCTIONS
 
-function processText() {
+function populateChildDivs(parentDiv, inputText) {
+  const lines = inputText.split('\n');
+
+  parentDiv.innerText = '';
+
+  for (line of lines) {
+    const div = document.createElement('div');
+
+    // preserve empty lines in html
+    if (line === '') {
+      div.innerHTML = '</br>';
+    } else {
+      div.innerText = line;
+    }
+
+    parentDiv.appendChild(div);
+  }
+}
+
+function processInput() {
   mirrorDivContent();
   highlightAllPalindromes();
 }
@@ -113,7 +142,7 @@ function isCharCodeDigit(charCode) {
 // MAIN
 
 (function main() {
-  processText();
+  processInput();
 
   editableDiv.focus();
 }())
