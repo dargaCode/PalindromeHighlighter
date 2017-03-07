@@ -34,7 +34,7 @@ h1 {
 }
 
 .editable-div:focus {
-  outline: 2px solid #aaf;
+  outline: 2px solid #81afe4;
 }
 
 .editable-div {
@@ -51,5 +51,5 @@ h1 {
 }
 
 .highlight {
-  background: pink;
+  background: #aaddff;
 }
