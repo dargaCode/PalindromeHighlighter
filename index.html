@@ -9,28 +9,38 @@
 <div class="container">
   <h1>Palindrome Highlighter</h1>
 
-  <div id="editable-div" class="editable-div" contenteditable spellcheck=false>
-    <div>Edit the text in this box to see which words are palindromes.</div>
+  <div class="textbox-container">
+    <div id="editable-div-mirror" class="mirror-div">
+      <!-- Since it's difficult to save and retreive the cursor position of an editable div, update the clases on this div instead.
 
-    <div><br></div>
+      This should create two divs that look exactly the same, so that the div with the highlight can be placed behind the actual editable div, and display the highlights. -->
+    </div>
 
-    <div>Palindromic words are those that read the same forward and backward, such as "wow", "solos", "tenet", or "rotator".</div>
+    <div id="editable-div" class="editable-div" contenteditable spellcheck=false>
+      <!-- Put content on a new div for each line, which is how editable divs process text as it is typed. -->
 
-    <div><br></div>
+      <div>Edit the text in this box to see which words are palindromes.</div>
 
-    <div>==========</div>
+      <div><br></div>
 
-    <div><br></div>
+      <div>Palindromic words are those that read the same forward and backward, such as "wow", "solos", "tenet", or "rotator".</div>
 
-    <div>Ma'am, did you refer to the 1,001 sagas of Bob and Anna, the civic planner and the racecar driver?</div>
+      <div><br></div>
 
-    <div><br></div>
+      <div>==========</div>
 
-    <div>Paddling a lil' kayak at noon (with no rotor), Bob became red, and then redder and redder.</div>
+      <div><br></div>
 
-    <div><br></div>
+      <div>Ma'am, did you refer to the 1,001 sagas of Bob and Anna, the civic planner and the racecar driver?</div>
 
-    <div>Anna said, "Wow Dad, if your exposure level gets much higher, I might be required to become your reviver!"</div>
+      <div><br></div>
+
+      <div>Paddling a lil' kayak at noon (with no rotor), Bob became red, and then redder and redder.</div>
+
+      <div><br></div>
+
+      <div>Anna said, "Wow Dad, if your exposure level gets much higher, I might be required to become your reviver!"</div>
+    </div>
   </div>
 </div>
 

@@ -1,3 +1,6 @@
+
+/*GENERAL*/
+
 body  {
   background: #ccc;
 }
@@ -12,15 +15,39 @@ h1 {
   margin: 30px 0;
 }
 
-.editable-div {
+/*TEXT DIVS*/
+
+.textbox-container {
+  position: relative;
+}
+
+.editable-div,
+.mirror-div {
   font-family: monospace;
   font-size: 16px;
+  line-height: 1.4em;
   background: #fafafa;
+  min-height: 400px;
+  width: 100%;
   padding: 1em;
+  margin-bottom: 10px;
 }
 
 .editable-div:focus {
   outline: 2px solid #aaf;
+}
+
+.editable-div {
+  /* let the highlights show through from the mirror div, behind it */
+  background: transparent;
+  position: relative;
+}
+
+.mirror-div {
+  /* hide the redundant text, since only the highlights need to show through*/
+  color: transparent;
+  position: absolute;
+  top: 0;
 }
 
 .highlight {

@@ -2,18 +2,25 @@
 // DOM SELECTORS
 
 var editableDiv = document.querySelector('#editable-div');
-var input = document.querySelector('input');
+var mirrorDiv = document.querySelector('#editable-div-mirror');
 
 // EVENT BINDINGS
 
-editableDiv.addEventListener('input', function(event) {
-  highlightAllPalindromes();
-});
+editableDiv.addEventListener('input', processText);
 
 // FUNCTIONS
 
+function processText() {
+  mirrorDivContent();
+  highlightAllPalindromes();
+}
+
+function mirrorDivContent() {
+  mirrorDiv.innerHTML = editableDiv.innerHTML;
+}
+
 function highlightAllPalindromes() {
-  const childDivs = editableDiv.children;
+  const childDivs = mirrorDiv.children;
 
   for (div of childDivs) {
     highlightPalindromesInDiv(div);
@@ -106,7 +113,7 @@ function isCharCodeDigit(charCode) {
 // MAIN
 
 (function main() {
-  highlightAllPalindromes();
+  processText();
 
   editableDiv.focus();
 }())
