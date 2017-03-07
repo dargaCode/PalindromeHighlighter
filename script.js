@@ -55,16 +55,20 @@ function getSanitizedLines(text) {
 
     char = sanitizeChar(char);
 
+    // make sure the final line is added, by checking for the end
+    const endReached = i === text.length - 1;
+
     if (char === '\n') {
       lines.push(currentLine);
       currentLine = '';
-    } else {
+    } else if (endReached) {
+      currentLine += char;
+      lines.push(currentLine);
+    }
+      else {
       currentLine += char;
     }
   }
-
-  // add the line after final linebreak (or if no linebreak found)
-  lines.push(currentLine);
 
   return lines;
 }
