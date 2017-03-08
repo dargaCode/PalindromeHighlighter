@@ -1,6 +1,10 @@
 
 /*GENERAL*/
 
+* {
+  box-sizing: border-box;
+}
+
 body  {
   font-family: helvetica;
   background: #ccc;
